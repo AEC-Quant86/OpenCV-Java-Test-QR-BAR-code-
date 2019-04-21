@@ -81,10 +81,12 @@ public class Camera {
             if (camera.read(frame)) {
                // Здесь можно вставить код обработки кадра
             	//frame = CvAction.Canny(frame);
-            	//QrCode.start(frame);
-               img = CvUtils.MatToBufferedImage(frame);
+            	
+              //frame = QrCode.rotateImg(frame, 5);
+            	QrCode.rotaitingScan(frame);
+            	img = CvUtils.MatToBufferedImage(frame);
                
-               QrCode.start(img);
+               //QrCode.scan(img);
                
                if (img != null) {
                   ImageIcon imageIcon = new ImageIcon(img);
@@ -93,7 +95,7 @@ public class Camera {
                   window.pack();
                }
                try {
-                  Thread.sleep(10); // 10 кадров в секунду
+                 Thread.sleep(1); // 10 кадров в секунду
                } catch (InterruptedException e) {}
             }
             else {
@@ -102,7 +104,7 @@ public class Camera {
             }
          }
       }
-      finally {
+     finally {
          camera.release();
          isRun = false;
          isEnd = true;

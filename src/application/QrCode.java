@@ -7,7 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import com.google.zxing.BinaryBitmap;
@@ -30,7 +37,7 @@ public class QrCode {
 	
 	
 	
-		public static void start(BufferedImage frame)   {
+		public static void scan(BufferedImage frame)   {
 			
 				
 			    LuminanceSource source = new BufferedImageLuminanceSource(frame);
@@ -48,40 +55,51 @@ public class QrCode {
 				} catch (NotFoundException e) {
 					// TODO Auto-generated catch block
 					
-				}
-			   
-		
-						
-			
-			
-			
+				}	
 		}
 		
-	  
-		
-					
-						// TODO Auto-generated catch block
-	          /*  try {
-	              //  String filePath = "D:\\QRCODE\\chillyfacts.png";
-	                String charset = "UTF-8";
-	                Map < EncodeHintType, ErrorCorrectionLevel > hintMap = new HashMap < EncodeHintType, ErrorCorrectionLevel > ();
-	                hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-	               System.out.println (readQRCode(frame, charset, hintMap));
-	              //  System.out.println("Data read from QR Code: " + readQRCode(filePath, charset, hintMap));
-	            } catch (Exception e) {
-	                // TODO: handle exception
-	            }
-	        
-	}
-		
-	    public static String readQRCode(BufferedImage frame, String charset, Map hintMap)
-	    throws  NotFoundException {
-	        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
-	            new BufferedImageLuminanceSource(
-	               frame)));
-	        Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap, hintMap);
-	        return qrCodeResult.getText();
-	}*/
+		public static Mat rotateImg(Mat img, double deg) {
+			//Mat img = new Mat();
 	
+			Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2BGRA);
+			// Трансформация вращения
+			//double angle = 45;
+			Mat M = Imgproc.getRotationMatrix2D(
+			         new Point(img.width() / 2, img.height() / 2), deg, 1);
+			// Расчет размеров и положения
+			Rect rect = new RotatedRect(
+			         new Point(img.width() / 2, img.height() / 2),
+			         new Size(img.width(), img.height()), deg).boundingRect();
+			// Корректировка матрицы трансформации
+			double[] arrX = M.get(0, 2);
+			double[] arrY = M.get(1, 2);
+			arrX[0] -= rect.x;
+			arrY[0] -= rect.y;
+			M.put(0, 2, arrX);
+			M.put(1, 2, arrY);
+			// Трансформация
+			Mat img2 = new Mat();
+			Imgproc.warpAffine(img, img2, M, rect.size(),
+			      Imgproc.INTER_LINEAR, Core.BORDER_CONSTANT,
+			      new Scalar(255, 255, 255, 255));
+		
+			//img.release(); 
+			M.release();
+			//img2.release();
 
+
+			
+			return img2;
+		}
+
+		public static void rotaitingScan(Mat img1) {
+			for (int i=0; i<=360;i+=15 ) {
+				
+			
+				Mat img2 = rotateImg(img1,i);
+				BufferedImage frame1 = CvUtils.MatToBufferedImage(img2);
+				scan(frame1);
+			}
+			
+		}
 }
