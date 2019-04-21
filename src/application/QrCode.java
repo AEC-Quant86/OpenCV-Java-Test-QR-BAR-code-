@@ -93,7 +93,7 @@ public class QrCode {
 		}
 
 		public static void rotaitingScan(Mat img1) {
-			for (int i=0; i<=360;i+=15 ) {
+			for (int i=0; i<=180;i+=15 ) {
 				
 			
 				Mat img2 = rotateImg(img1,i);
