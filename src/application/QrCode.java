@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
@@ -35,7 +36,7 @@ import java.awt.image.BufferedImage;
 
 public class QrCode {
 	
-	
+	public static HashSet<String> outputBarCode = new HashSet<>();
 	
 		public static void scan(BufferedImage frame)   {
 			
@@ -49,8 +50,12 @@ public class QrCode {
 					Result[] result = readerM.decodeMultiple(bitmap);
 					// System.out.println("Barcode text is " + result.getText());
 					for (Result r : result) {
+						outputBarCode.add(r.getText());
+						//System.out.println("Barcode text is " + r.getText());
+					}
+					for (String r : outputBarCode) {
 						
-						System.out.println("Barcode text is " + r.getText());
+						System.out.println( r);
 					}
 				} catch (NotFoundException e) {
 					// TODO Auto-generated catch block
@@ -100,6 +105,6 @@ public class QrCode {
 				BufferedImage frame1 = CvUtils.MatToBufferedImage(img2);
 				scan(frame1);
 			}
-			
+			outputBarCode.clear();
 		}
 }

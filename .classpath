@@ -7,12 +7,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/OpenCV/OpenCV-zip/opencv/build/java/opencv-401.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/OpenCV/OpenCV-zip/opencv/build/java/x64"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/OpenCV/javase-3.3.3(zxing).jar"/>
-	<classpathentry kind="lib" path="D:/OpenCV/zxing-core-2.0.jar"/>
+	<classpathentry kind="lib" path="libs/javase-3.3.3(zxing).jar"/>
+	<classpathentry kind="lib" path="libs/zxing-core-2.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
